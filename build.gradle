@@ -1,0 +1,36 @@
+tasks.register('runBackendLocally', Exec){
+    commandLine './scripts/runBackendLocally.sh'
+}
+
+tasks.register('runFrontendLocally', Exec){
+    commandLine './scripts/runFrontEndLocally.sh'
+}
+
+tasks.register('runUnitTests', Exec){
+    commandLine './scripts/runUnitTests.sh'
+}
+
+tasks.register('runReactUnitTests', Exec){
+    commandLine './scripts/runReactUnitTests.sh'
+}
+
+tasks.register('runReactLint', Exec){
+    commandLine './scripts/runReactLint.sh'
+}
+
+tasks.register('runEndToEndTests', Exec){
+    commandLine './scripts/runEndToEndTests.sh'
+}
+
+tasks.register("startMongo",Exec){
+    commandLine 'docker-compose', 'up', 'mongodb'
+}
+
+tasks.register("composeDown", Exec){
+    commandLine 'docker-compose', 'down', '--rmi','all'
+}
+
+tasks.register("composeUp",Exec){
+    dependsOn 'composeDown'
+    commandLine 'docker-compose', 'up'
+}

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  flask-server:
+    image: academic-team-management-flask:latest
+    build: 
+      context: ./server
+      args:
+        - PRIVATE_KEY=${PRIVATE_KEY}
+    env_file:
+      - .env
+    ports:
+      - ${FLASK}:${FLASK}
+  react-server:
+    image: academic-team-management-react:latest
+    links:
+      - flask-server
+    build: 
+      context: ./client
+      args:
+        - BACKEND_URL=http://flask-server:${FLASK}
+        - BACKEND_HOST=${BACKEND_HOST}
+        - APP=${FLASK}
+    env_file:
+      - .env
+    ports:
+      - ${REACT}:3000
+    depends_on:
+      - flask-server
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    hostname: ${MONGODB_HOST}
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGODB_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_INITDB_ROOT_PASSWORD}
+    ports:
+      - ${MONGO}:27017
+    volumes:
+      - ${INIT_MOUNT}
+      - academic-team-management-data:/data/db
+volumes:
+  academic-team-management-data:
+    driver: local

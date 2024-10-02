@@ -1,0 +1,17 @@
+**/__pycache__
+privateKey
+.env
+/dump
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore .DS_store files from MACs
+**/.DS_Store
+
+# Ignore Gradle build output directory
+build
+
+server/.coverage
+server/htmlcov
+server/coverage-report
